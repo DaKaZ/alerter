@@ -55,10 +55,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="alerter.gemspec" pinned="false" current-in-tab="true">
+      <file leaf-file-name="alerter.gemspec" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/alerter.gemspec">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.23076923">
+            <state vertical-scroll-proportion="0.0">
               <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
               <folding />
             </state>
@@ -70,6 +70,29 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="46" column="3" selection-start-line="46" selection-start-column="3" selection-end-line="46" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.51724136">
+              <caret line="4" column="68" selection-start-line="4" selection-start-column="68" selection-end-line="4" selection-end-column="68" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="MarkdownPreviewEditor">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="alerter.rb" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/alerter.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.8717949">
+              <caret line="58" column="33" selection-start-line="58" selection-start-column="33" selection-end-line="58" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -106,7 +129,6 @@
         <option value="$PROJECT_DIR$/lib/alerter/models/notifiable.rb" />
         <option value="$PROJECT_DIR$/app/models/alerter/message.rb" />
         <option value="$PROJECT_DIR$/db/migrate/20150821000000_create_alerter.rb" />
-        <option value="$PROJECT_DIR$/lib/alerter.rb" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/Rakefile" />
         <option value="$PROJECT_DIR$/Appraisals" />
@@ -127,6 +149,7 @@
         <option value="$PROJECT_DIR$/spec/dummy/config/initializers/alerter.rb" />
         <option value="$PROJECT_DIR$/lib/generators/templates/initializer.rb" />
         <option value="$PROJECT_DIR$/alerter.gemspec" />
+        <option value="$PROJECT_DIR$/lib/alerter.rb" />
       </list>
     </option>
   </component>
@@ -663,17 +686,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.0689654">
-          <caret line="4" column="68" selection-start-line="4" selection-start-column="68" selection-end-line="4" selection-end-column="68" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="MarkdownPreviewEditor">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Appraisals">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.14137606">
@@ -759,14 +771,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/alerter.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.08547009">
-          <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/generators/templates/initializer.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.4059829">
@@ -810,6 +814,14 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/alerter.gemspec">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/spec/spec_helper.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -818,10 +830,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/alerter.gemspec">
+    <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.23076923">
-          <caret line="26" column="0" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+        <state vertical-scroll-proportion="-0.51724136">
+          <caret line="4" column="68" selection-start-line="4" selection-start-column="68" selection-end-line="4" selection-end-column="68" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="MarkdownPreviewEditor">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/alerter.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8717949">
+          <caret line="58" column="33" selection-start-line="58" selection-start-column="33" selection-end-line="58" selection-end-column="33" />
           <folding />
         </state>
       </provider>
