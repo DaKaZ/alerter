@@ -19,11 +19,11 @@ class Alerter::InstallGenerator < Rails::Generators::Base #:nodoc:
   def copy_migrations
     if Rails.version < "3.1"
       migrations = [
-          %w[20110511145103_create_alerter.rb create_alerter.rb]
-      ],
-          migrations.each do |migration|
-            migration_template "../../../../db/migrate/" + migration[0], "db/migrate/" + migration[1]
-          end
+          %w[20150821000000_create_alerter.rb create_alerter.rb]
+        ]
+      migrations.each do |migration|
+        migration_template "../../../../db/migrate/" + migration[0], "db/migrate/" + migration[1]
+      end
     else
       require 'rake'
       Rails.application.load_tasks

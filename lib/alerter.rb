@@ -17,6 +17,10 @@ module Alerter
   mattr_accessor :name_method
   @@name_method = :name
 
+  # method used to retrieve the recipient's email
+  mattr_accessor :email_method
+  @@name_method = :email
+
   mattr_accessor :short_msg_length
   @@short_msg_length = 144
 
