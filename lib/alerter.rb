@@ -1,0 +1,59 @@
+require "alerter/version"
+
+module Alerter
+  module Models
+    autoload :Notifiable, 'alerter/models/notifiable'
+  end
+
+  # Default from address for email notifications
+  mattr_accessor :default_from
+  @@default_from = "no-reply@alerter.com"
+
+  # default subject to use on emails only
+  mattr_accessor :default_subject
+  @@default_from = "Alerter: you have a new message!"
+
+  # method used to retrieve the recipient's name
+  mattr_accessor :name_method
+  @@name_method = :name
+
+  mattr_accessor :short_msg_length
+  @@short_msg_length = 144
+
+  mattr_accessor :long_msg_length
+  @@long_msg_length = 512
+
+  mattr_accessor :mailer_wants_array
+  @@mailer_wants_array = false
+
+  # array of available (supported) notification methods
+  mattr_accessor :available_notification_methods
+  @@available_notification_methods = %w( none email push sms twitter )
+
+  # the chosen notification method for this object
+  mattr_accessor :notification_method
+  @@notification_method = %w( none )
+
+  mattr_accessor :email_message_mailer
+  mattr_accessor :custom_email_delivery_proc
+  mattr_accessor :sms_message_mailer
+  mattr_accessor :custom_sms_delivery_proc
+  mattr_accessor :push_message_mailer
+  mattr_accessor :custom_push_delivery_proc
+
+  class << self
+    def setup
+      yield self
+    end
+
+    def protected_attributes?
+      Rails.version < '4' || defined?(ProtectedAttributes)
+    end
+  end
+end
+
+# reopen ActiveRecord and include all the above to make
+# them available to all our models if they want it
+require 'mailboxer/engine'
+require 'mailboxer/cleaner'
+require 'mailboxer/mail_dispatcher'
