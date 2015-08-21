@@ -18,3 +18,6 @@ Alerter.setup do |config|
   config.short_msg_length = 144 # twitter support
   config.long_msg_length = 2048
 end
+if Alerter::NotificationType.all.count == 0
+  Alerter::NotificationType.create(name: 'Default')
+end

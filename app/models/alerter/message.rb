@@ -1,5 +1,5 @@
 class Alerter::Message < ActiveRecord::Base
-  self.table_name = :alerter_message
+  self.table_name = :alerter_messages
 
   attr_accessor :recipients
   attr_accessible :message, :subject, :global, :expires if Alerter.protected_attributes?

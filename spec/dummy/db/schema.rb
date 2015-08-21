@@ -9,71 +9,68 @@
 # from scratch. The latter is a flawed and unsustainable approach (the more migrations
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
-# It's strongly recommended to check this file into your version control system.
+# It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131206080416) do
+ActiveRecord::Schema.define(version: 20150821233449) do
 
-  create_table "cylons", :force => true do |t|
-    t.string   "name"
-    t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "ducks", :force => true do |t|
-    t.string   "name"
-    t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "mailboxer_conversation_opt_outs", :force => true do |t|
-    t.integer "unsubscriber_id"
-    t.string  "unsubscriber_type"
-    t.integer "conversation_id"
-  end
-
-  create_table "mailboxer_conversations", :force => true do |t|
-    t.string   "subject",    :default => ""
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
-  end
-
-  create_table "mailboxer_notifications", :force => true do |t|
+  create_table "alerter_messages", force: :cascade do |t|
     t.string   "type"
-    t.text     "body"
-    t.string   "subject",              :default => ""
+    t.string   "short_msg",            default: ""
+    t.text     "long_msg",             default: ""
     t.integer  "sender_id"
     t.string   "sender_type"
+    t.boolean  "draft",                default: false
+    t.string   "notification_code"
     t.integer  "notified_object_id"
     t.string   "notified_object_type"
-    t.string   "notification_code"
-    t.integer  "conversation_id"
-    t.boolean  "draft",                :default => false
+    t.integer  "notification_type_id"
     t.string   "attachment"
-    t.datetime "updated_at",                              :null => false
-    t.datetime "created_at",                              :null => false
-    t.boolean  "global",               :default => false
+    t.datetime "updated_at",                           null: false
+    t.datetime "created_at",                           null: false
+    t.boolean  "global",               default: false
     t.datetime "expires"
   end
 
-  add_index "mailboxer_notifications", ["conversation_id"], :name => "index_mailboxer_notifications_on_conversation_id"
-
-  create_table "mailboxer_receipts", :force => true do |t|
-    t.integer  "receiver_id"
-    t.string   "receiver_type"
-    t.integer  "notification_id",                                  :null => false
-    t.boolean  "is_read",                       :default => false
-    t.boolean  "trashed",                       :default => false
-    t.boolean  "deleted",                       :default => false
-    t.string   "mailbox_type",    :limit => 25
-    t.datetime "created_at",                                       :null => false
-    t.datetime "updated_at",                                       :null => false
+  create_table "alerter_notification_types", force: :cascade do |t|
+    t.string "name"
   end
 
-  add_index "mailboxer_receipts", ["notification_id"], :name => "index_mailboxer_receipts_on_notification_id"
+  create_table "alerter_preferences", force: :cascade do |t|
+    t.integer "alerter_notification_types_id"
+    t.integer "notifiable_id"
+    t.string  "notifiable_type"
+    t.text    "methods"
+  end
 
-  create_table "users", :force => true do |t|
+  create_table "alerter_receipts", force: :cascade do |t|
+    t.integer  "receiver_id"
+    t.string   "receiver_type"
+    t.integer  "message_id",                               null: false
+    t.boolean  "is_read",                  default: false
+    t.boolean  "trashed",                  default: false
+    t.boolean  "deleted",                  default: false
+    t.string   "mailbox_type",  limit: 25
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
+  end
+
+  add_index "alerter_receipts", ["message_id"], name: "index_alerter_receipts_on_message_id"
+
+  create_table "cylons", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ducks", force: :cascade do |t|
+    t.string   "name"
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: :cascade do |t|
     t.string   "name"
     t.string   "email"
     t.datetime "created_at"

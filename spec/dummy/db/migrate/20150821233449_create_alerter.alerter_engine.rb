@@ -35,7 +35,6 @@ class CreateAlerter < ActiveRecord::Migration
     create_table :alerter_notification_types do |t|
       t.column :name, :string, :null => :false
     end
-    Alerter::NotificationType.create(name: 'Default')
 
     #preferences
     create_table :alerter_preferences do |t|
