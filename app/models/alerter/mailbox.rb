@@ -9,7 +9,7 @@ class Alerter::Mailbox
   #Returns the notifications for the messageable
   def notifications(options = {})
     #:type => nil is a hack not to give Messages as Notifications
-    notifs = Alerter::Notification.recipient(messageable).where(:type => nil).order("Alerter_notifications.created_at DESC")
+    notifs = Alerter::Message.recipient(@notifiable).where(:type => nil).order("alerter_messages.created_at DESC")
     if options[:read] == false || options[:unread]
       notifs = notifs.unread
     end
@@ -29,14 +29,14 @@ class Alerter::Mailbox
   #* :read=false
   #* :unread=true
   #
-  def conversations(options = {})
+  def messages(options = {})
     messages = get_messages(options[:mailbox_type])
 
     if options[:read] == false || options[:unread]
       messages = messages.unread(notifiable)
     end
 
-    conv
+    messages
   end
 
   #Returns the messages in the inbox of notifiable
@@ -44,24 +44,9 @@ class Alerter::Mailbox
   #Same as conversations({:mailbox_type => 'inbox'})
   def inbox(options={})
     options = options.merge(:mailbox_type => 'inbox')
-    conversations(options)
+    messages(options)
   end
 
-  #Returns the messages in the sentbox of notifiable
-  #
-  #Same as conversations({:mailbox_type => 'sentbox'})
-  def sentbox(options={})
-    options = options.merge(:mailbox_type => 'sentbox')
-    conversations(options)
-  end
-
-  #Returns the conversations in the trash of notifiable
-  #
-  #Same as conversations({:mailbox_type => 'trash'})
-  def trash(options={})
-    options = options.merge(:mailbox_type => 'trash')
-    conversations(options)
-  end
 
   #Returns all the receipts of notifiable from Messages
   def receipts(options = {})
@@ -74,9 +59,7 @@ class Alerter::Mailbox
   def get_messages(mailbox)
     case mailbox
       when 'inbox'
-        Alerter::Conversation.inbox(notifiable)
-      when 'sentbox'
-        Alerter::Conversation.sentbox(notifiable)
+        Alerter::Message.inbox(notifiable)
     end
 
   end

@@ -6,6 +6,7 @@ require "rspec/rails"
 
 require 'rspec/its'
 require 'rspec/collection_matchers'
+require 'pry'
 
 ActionMailer::Base.delivery_method = :test
 ActionMailer::Base.perform_deliveries = true

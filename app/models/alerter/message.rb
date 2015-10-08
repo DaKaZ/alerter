@@ -15,9 +15,20 @@ class Alerter::Message < ActiveRecord::Base
   validates :long_msg,    :presence => true,
             :length => { :maximum => Alerter.long_msg_length }
 
+
+
+
   scope :recipient, lambda { |recipient|
                     joins(:receipts).where('Alerter_receipts.receiver_id' => recipient.id,'Alerter_receipts.receiver_type' => recipient.class.base_class.to_s)
                   }
+
+  scope :inbox, lambda {|recipient|
+                recipient(recipient).merge(Alerter::Receipt.inbox.not_trash.not_deleted)
+              }
+  scope :sentbox, lambda {|recipient|
+                  recipient(recipient).merge(Alerter::Receipt.sentbox.not_trash.not_deleted)
+                }
+
   scope :with_object, lambda { |obj|
                       where('notified_object_id' => obj.id,'notified_object_type' => obj.class.to_s)
                     }
