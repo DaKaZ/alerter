@@ -9,5 +9,4 @@ class Alerter::MessageBuilder < Alerter::BaseBuilder
   def message
     params[:message] || "empty message"
   end
-
 end

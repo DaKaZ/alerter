@@ -18,7 +18,6 @@ class CreateAlerter < ActiveRecord::Migration
       t.column :type, :string
       t.column :short_msg, :string, :default => ""
       t.column :long_msg, :text, :default => ""
-      t.references :sender, :polymorphic => true
       t.column :draft, :boolean, :default => false
       t.string :notification_code, :default => nil
       t.references :notified_object, :polymorphic => true

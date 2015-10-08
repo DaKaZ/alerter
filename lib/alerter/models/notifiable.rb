@@ -59,15 +59,14 @@ module Alerter
 
       #Sends a notification
       #as originator
-      def send_message(short_msg, long_msg, obj = nil, sanitize_text = true, notification_code=nil)
+      def send_message(short_msg, long_msg, notification_type_name, sanitize_text = true)
         message = Alerter::MessageBuilder.new({
                                                     :recipients        => self,
                                                     :short_msg         => short_msg,
                                                     :long_msg          => long_msg,
-                                                    :notified_object   => obj,
-                                                    :notification_code => notification_code,
+                                                    :notification_type => NotificationType.find_or_create_by(name: notification_type_name),
                                                 }).build
-
+        message.save!
         message.deliver sanitize_text
       end
 
