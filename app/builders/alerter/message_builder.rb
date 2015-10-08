@@ -6,8 +6,8 @@ class Alerter::MessageBuilder < Alerter::BaseBuilder
     Alerter::Message
   end
 
-  def msg
-    params[:msg] || "empty message"
+  def message
+    params[:message] || "empty message"
   end
 
 end

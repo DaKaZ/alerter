@@ -59,17 +59,16 @@ module Alerter
 
       #Sends a notification
       #as originator
-      def send_message(recipients, msg, sanitize_text=true, message_timestamp = Time.now)
-
+      def send_message(short_msg, long_msg, obj = nil, sanitize_text = true, notification_code=nil)
         message = Alerter::MessageBuilder.new({
-                                                    :sender       => self,
-                                                    :recipients   => recipients,
-                                                    :msg          => msg,
-                                                    :created_at   => message_timestamp,
-                                                    :updated_at   => message_timestamp
+                                                    :recipients        => self,
+                                                    :short_msg         => short_msg,
+                                                    :long_msg          => long_msg,
+                                                    :notified_object   => obj,
+                                                    :notification_code => notification_code,
                                                 }).build
 
-        message.deliver false, sanitize_text
+        message.deliver sanitize_text
       end
 
 

@@ -32,18 +32,18 @@ class Alerter::Message < ActiveRecord::Base
 
   class << self
     #Sends a Notification to all the recipients
-    def notify_all(recipients, short_msg, long_msg, obj = nil, sanitize_text = true, notification_code=nil, send_mail=true, sender=nil)
-      notification = Alerter::MessageBuilder.new({
-                                                            :recipients        => recipients,
-                                                            :short_msg         => short_msg,
-                                                            :long_msg          => long_msg,
-                                                            :notified_object   => obj,
-                                                            :notification_code => notification_code,
-                                                            :sender            => sender
-                                                        }).build
-
-      notification.deliver sanitize_text, send_mail
-    end
+    # def notify_all(recipients, short_msg, long_msg, obj = nil, sanitize_text = true, notification_code=nil, sender=nil)
+    #   notification = Alerter::MessageBuilder.new({
+    #                                                         :recipients        => recipients,
+    #                                                         :short_msg         => short_msg,
+    #                                                         :long_msg          => long_msg,
+    #                                                         :notified_object   => obj,
+    #                                                         :notification_code => notification_code,
+    #                                                         :sender            => sender
+    #                                                     }).build
+    #
+    #   notification.deliver sanitize_text
+    # end
 
     #Takes a +Receipt+ or an +Array+ of them and returns +true+ if the delivery was
     #successful or +false+ if some error raised
@@ -80,8 +80,7 @@ class Alerter::Message < ActiveRecord::Base
   #Use Alerter::Models::Message.notify and Notification.notify_all instead.
   def deliver(should_clean = true)
     clean if should_clean
-    temp_receipts = recipients.map { |r| build_receipt(r, nil, false) }
-
+    temp_receipts = recipients.map { |r| build_receipt(r, 'inbox', false) }
     if temp_receipts.all?(&:valid?)
       temp_receipts.each(&:save!)   #Save receipts
       Alerter::MailDispatcher.new(self, recipients).call
@@ -145,8 +144,8 @@ class Alerter::Message < ActiveRecord::Base
 
   #Sanitizes the body and subject
   def clean
-    self.subject = sanitize(subject) if subject
-    self.body    = sanitize(body)
+    self.short_msg = sanitize(short_msg)
+    self.long_msg = sanitize(long_msg)
   end
 
 
@@ -158,7 +157,7 @@ class Alerter::Message < ActiveRecord::Base
 
   def build_receipt(receiver, mailbox_type, is_read = false)
     Alerter::ReceiptBuilder.new({
-                                      :notification => self,
+                                      :message => self,
                                       :mailbox_type => mailbox_type,
                                       :receiver     => receiver,
                                       :is_read      => is_read
