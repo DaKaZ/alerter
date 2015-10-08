@@ -32,6 +32,9 @@ class Alerter::Message < ActiveRecord::Base
   scope :unread,  lambda {
                  joins(:receipts).where('Alerter_receipts.is_read' => false)
                }
+  scope :read,  lambda {
+                 joins(:receipts).where('Alerter_receipts.is_read' => true)
+               }
   scope :global, lambda { where(:global => true) }
   scope :expired, lambda { where("Alerter_notifications.expires < ?", Time.now) }
   scope :unexpired, lambda {
