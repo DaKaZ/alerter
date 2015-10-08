@@ -50,7 +50,6 @@ module Alerter
 
 
     def send_email(recipient)
-      binding.pry
       if Alerter.custom_email_delivery_proc
         Alerter.custom_email_delivery_proc.call(mailer, mailable, recipient)
       else
