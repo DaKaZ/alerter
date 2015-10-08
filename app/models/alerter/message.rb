@@ -107,7 +107,8 @@ class Alerter::Message < ActiveRecord::Base
 
   #Returns the receipt for the participant
   def receipt_for(participant)
-    Alerter::Receipt.notification(self).recipient(participant)
+    #Alerter::Receipt.notification(self).recipient(participant)
+    self.receipts.recipient(participant)
   end
 
   #Returns the receipt for the participant. Alias for receipt_for(participant)
