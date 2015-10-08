@@ -14,14 +14,12 @@ class Alerter::Receipt < ActiveRecord::Base
   #with the primary class (no type is saved)
   scope :messages_receipts, lambda { joins(:message).where('alerter_notifications.type' => Alerter::Message.to_s) }
 
-  scope :sentbox, lambda { where(:mailbox_type => "sentbox") }
   scope :inbox, lambda { where(:mailbox_type => "inbox") }
   scope :deleted, lambda { where(:deleted => true) }
   scope :not_deleted, lambda { where(:deleted => false) }
   scope :is_read, lambda { where(:is_read => true) }
   scope :is_unread, lambda { where(:is_read => false) }
-  scope :trash, lambda { where(:trashed => true, :deleted => false) }
-  scope :not_trash, lambda { where(:trashed => false) }
+
 
   class << self
     #Marks all the receipts from the relation as read
@@ -44,15 +42,6 @@ class Alerter::Receipt < ActiveRecord::Base
       update_receipts({:deleted => false}, options)
     end
 
-    #Moves all the receipts from the relation to inbox
-    def move_to_inbox(options={})
-      update_receipts({:mailbox_type => :inbox, :trashed => false}, options)
-    end
-
-    #Moves all the receipts from the relation to sentbox
-    def move_to_sentbox(options={})
-      update_receipts({:mailbox_type => :sentbox, :trashed => false}, options)
-    end
 
     def update_receipts(updates, options={})
       ids = where(options).map { |rcp| rcp.id }
@@ -83,16 +72,6 @@ class Alerter::Receipt < ActiveRecord::Base
   #Marks the receipt as unread
   def mark_as_unread
     update_attributes(:is_read => false)
-  end
-
-  #Moves the receipt to inbox
-  def move_to_inbox
-    update_attributes(:mailbox_type => :inbox, :trashed => false)
-  end
-
-  #Moves the receipt to sentbox
-  def move_to_sentbox
-    update_attributes(:mailbox_type => :sentbox, :trashed => false)
   end
 
   #Returns if the participant have read the Notification

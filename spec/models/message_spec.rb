@@ -13,9 +13,9 @@ describe Alerter::Message do
   end
 
   it "should be able to be marked as deleted" do
-    expect(@receipt1.deleted).to be false
-    @message1.mark_as_deleted (@entity1)
-    expect(@message1.is_deleted?(@entity1)).to be true
+    expect(@receipt1.deleted).to be_falsey
+    @message1.mark_as_deleted(@entity1)
+    expect(@message1.is_deleted?(@entity1)).to be_truthy
   end
 
 end

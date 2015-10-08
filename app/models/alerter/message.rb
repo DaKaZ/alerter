@@ -23,11 +23,12 @@ class Alerter::Message < ActiveRecord::Base
                   }
 
   scope :inbox, lambda {|recipient|
-                receipts(recipient).merge(Alerter::Receipt.inbox.not_trash.not_deleted)
+                receipts(recipient).merge(Alerter::Receipt.inbox.not_deleted)
               }
-  scope :sentbox, lambda {|recipient|
-                  receipts(recipient).merge(Alerter::Receipt.sentbox.not_trash.not_deleted)
-                }
+
+  scope :trash, lambda {|recipient|
+                receipts(recipient).merge(Alerter::Receipt.deleted)
+              }
 
   scope :unread,  lambda {
                  joins(:receipts).where('Alerter_receipts.is_read' => false)

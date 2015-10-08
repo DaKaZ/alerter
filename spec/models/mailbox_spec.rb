@@ -23,6 +23,15 @@ describe Alerter::Mailbox do
     expect(@entity1.mailbox.inbox).to match_array([@msg1])
   end
 
+  it "should return trash" do
+    expect(@entity1.mailbox.inbox).to match_array([@msg1])
+    @receipt3 =  @entity1.send_message("short","long","normal")
+    @msg3 = @receipt3.message
+    expect(@entity1.mailbox.inbox).to match_array([@msg1, @msg3])
+    @msg1.mark_as_deleted(@entity1)
+    expect(@entity1.mailbox.trash).to match_array([@msg1])
+  end
+
   it "should understand the read option" do
     expect(@entity1.mailbox.inbox(read: true)).to match_array([@msg1])
     # TODO create multiple messages and one as read, ensure only one is returned

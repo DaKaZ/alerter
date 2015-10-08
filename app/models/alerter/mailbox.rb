@@ -23,7 +23,6 @@ class Alerter::Mailbox
   #
   #* :mailbox_type
   #  * "inbox"
-  #  * "sentbox"
   #  * "trash"
   #
   #* :read=false
@@ -47,6 +46,11 @@ class Alerter::Mailbox
     messages(options)
   end
 
+  def trash(options={})
+    options = options.merge(:mailbox_type => 'trash')
+    messages(options)
+  end
+
 
   #Returns all the receipts of notifiable from Messages
   def receipts(options = {})
@@ -60,6 +64,8 @@ class Alerter::Mailbox
     case mailbox
       when 'inbox'
         Alerter::Message.inbox(notifiable)
+      when 'trash'
+        Alerter::Message.trash(notifiable)
     end
 
   end

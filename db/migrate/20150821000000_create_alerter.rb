@@ -7,7 +7,6 @@ class CreateAlerter < ActiveRecord::Migration
       t.references :receiver, :polymorphic => true
       t.column :message_id, :integer, :null => false
       t.column :is_read, :boolean, :default => false
-      t.column :trashed, :boolean, :default => false
       t.column :deleted, :boolean, :default => false
       t.column :mailbox_type, :string, :limit => 25
       t.column :created_at, :datetime, :null => false
