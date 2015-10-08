@@ -18,6 +18,8 @@ module Alerter
       Alerter.notification_method.each do |method|
         case method
           when 'email'
+
+            binding.pry
             if Alerter.mailer_wants_array
               send_email(filtered_recipients(method))
             else

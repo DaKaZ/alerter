@@ -4,6 +4,9 @@ describe Alerter::Message do
 
   before do
     @entity1 = FactoryGirl.create(:user)
+    message_disp = double('MessageDispatcher')
+    expect(Alerter::MessageDispatcher).to receive(:new).with(instance_of(Alerter::Message), [@entity1]).and_return message_disp
+    expect(message_disp).to receive(:call)
     @receipt1 = @entity1.send_message("Short","Long","MyType")
     @message1 = @receipt1.message
   end
