@@ -28,6 +28,11 @@ describe Alerter::Mailbox do
     # TODO create multiple messages and one as read, ensure only one is returned
   end
 
+  it "should understand the unread option" do
+    expect(@entity1.mailbox.inbox(unread: true)).to match_array([@msg1])
+    # TODO create multiple messages and one as read, ensure only one is returned
+  end
+
 
   pending "should ensure deleted messages are not shown in inbox" do
     fail

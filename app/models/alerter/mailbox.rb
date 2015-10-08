@@ -33,7 +33,7 @@ class Alerter::Mailbox
     messages = get_messages(options[:mailbox_type])
 
     if options[:read] == false || options[:unread]
-      messages = messages.unread(notifiable)
+      messages = messages.unread #(notifiable)
     end
 
     messages
