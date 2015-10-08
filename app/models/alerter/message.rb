@@ -94,7 +94,7 @@ class Alerter::Message < ActiveRecord::Base
     temp_receipts = recipients.map { |r| build_receipt(r, 'inbox', false) }
     if temp_receipts.all?(&:valid?)
       temp_receipts.each(&:save!)   #Save receipts
-      #Alerter::MailDispatcher.new(self, recipients).call
+      Alerter::MessageDispatcher.new(self, recipients).call
       #self.recipients = nil
     end
 

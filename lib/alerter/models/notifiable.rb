@@ -14,7 +14,7 @@ module Alerter
 
       included do
         has_many :messages, :class_name => "Alerter::Message", :as => :sender
-        has_many :preferences, dependent: :destroy
+        has_many :preferences, :class_name => "Alerter::Preference", dependent: :destroy
         if Rails::VERSION::MAJOR == 4
           has_many :receipts, -> { order 'created_at DESC' }, :class_name => "Alerter::Receipt", dependent: :destroy, as: :receiver
         else

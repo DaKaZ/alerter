@@ -5,32 +5,32 @@ module Alerter
     end
   end
 
-  class MailDispatcher
+  class MessageDispatcher
 
-    attr_reader :mailable, :recipients
+    attr_reader :message, :recipients
 
-    def initialize(mailable, recipients)
-      @mailable, @recipients = mailable, recipients
+    def initialize(message, recipients)
+      @mailable, @recipients = message, recipients
     end
 
     def call
-      return false unless (Alerter.notification_method - Alerter.available_notification_methods).empty? # array subtraction to see if notification menthods are in the available list
+      return false unless (Alerter.notification_method - Alerter.available_notification_methods).empty? # array subtraction to see if notification methods are in the available list
       Alerter.notification_method.each do |method|
         case method
           when 'email'
             if Alerter.mailer_wants_array
               send_email(filtered_recipients(method))
             else
-              filtered_recipients.each do |recipient|
+              filtered_recipients(method).each do |recipient|
                 send_email(recipient) if recipient.preferences.methods.include?(method)
               end
             end
+          when 'none', 'ios_push', 'android_push', 'sms', 'twitter'
+
           else
             raise MethodNotImplemented.new(method)
         end
       end
-
-
     end
 
     private
@@ -50,10 +50,11 @@ module Alerter
 
 
     def send_email(recipient)
+      binding.pry
       if Alerter.custom_email_delivery_proc
         Alerter.custom_email_delivery_proc.call(mailer, mailable, recipient)
       else
-        email = mailer.send_email(mailable, recipient)
+        email = mailer.send_email(message, recipient)
         email.respond_to?(:deliver_now) ? email.deliver_now : email.deliver
       end
     end

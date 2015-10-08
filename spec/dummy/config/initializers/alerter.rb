@@ -12,9 +12,13 @@ Alerter.setup do |config|
 
   #Configures the array of available (supported) notification methods
   # Available choices are: none email push sms twitter
-  config.available_notification_methods = %w( none email push sms twitter )
+  config.available_notification_methods = %w( none email ios_push android_push sms twitter )
+
+  config.notification_method = %w( none email ios_push android_push sms twitter )
 
   #Configures maximum length of the message
   config.short_msg_length = 144 # twitter support
   config.long_msg_length = 2048
+
+
 end

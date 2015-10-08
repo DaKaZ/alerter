@@ -1,5 +1,5 @@
-class Alerter::Prefrences < ActiveRecord::Base
-  self.table_name = :alerter_prefrences
+class Alerter::Preference < ActiveRecord::Base
+  self.table_name = :alerter_preferences
   attr_accessible :methods if Alerter.protected_attributes?
 
   belongs_to :notifiable, :polymorphic => :true

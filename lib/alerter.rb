@@ -32,7 +32,7 @@ module Alerter
 
   # array of available (supported) notification methods
   mattr_accessor :available_notification_methods
-  @@available_notification_methods = %w( none email push sms twitter )
+  @@available_notification_methods = %w( none email ios_push android_push sms twitter )
 
   # the chosen notification method for this object
   mattr_accessor :notification_method
@@ -60,4 +60,4 @@ end
 # them available to all our models if they want it
 require 'alerter/engine'
 require 'alerter/cleaner'
-require 'alerter/mail_dispatcher'
+require 'alerter/message_dispatcher'
