@@ -9,19 +9,17 @@ describe Alerter::Mailbox do
   end
 
   it "should return all mail" do
+    expect(@entity1.mailbox.all_messages).to eq([])
+  end
+
+
+  it "should return inbox" do
     expect(@entity1.mailbox.inbox).to eq([])
   end
 
-  pending "should return sentbox" do
-    fail
-  end
-
-  pending "should return inbox" do
-    fail
-  end
-
-  pending "should understand the read option" do
-    fail
+  it "should understand the read option" do
+    expect(@entity1.mailbox.inbox(read: true)).to eq([])
+    # TODO create multiple messages and one as read, ensure only one is returned
   end
 
 
