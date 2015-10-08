@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Mailboxer::Receipt do
+describe Alerter::Receipt do
 
   before do
     @entity1 = FactoryGirl.create(:user)

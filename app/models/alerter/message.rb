@@ -16,18 +16,18 @@ class Alerter::Message < ActiveRecord::Base
             :length => { :maximum => Alerter.long_msg_length }
 
   scope :recipient, lambda { |recipient|
-                    joins(:receipts).where('mailboxer_receipts.receiver_id' => recipient.id,'mailboxer_receipts.receiver_type' => recipient.class.base_class.to_s)
+                    joins(:receipts).where('Alerter_receipts.receiver_id' => recipient.id,'Alerter_receipts.receiver_type' => recipient.class.base_class.to_s)
                   }
   scope :with_object, lambda { |obj|
                       where('notified_object_id' => obj.id,'notified_object_type' => obj.class.to_s)
                     }
   scope :unread,  lambda {
-                 joins(:receipts).where('mailboxer_receipts.is_read' => false)
+                 joins(:receipts).where('Alerter_receipts.is_read' => false)
                }
   scope :global, lambda { where(:global => true) }
-  scope :expired, lambda { where("mailboxer_notifications.expires < ?", Time.now) }
+  scope :expired, lambda { where("Alerter_notifications.expires < ?", Time.now) }
   scope :unexpired, lambda {
-                    where("mailboxer_notifications.expires is NULL OR mailboxer_notifications.expires > ?", Time.now)
+                    where("Alerter_notifications.expires is NULL OR Alerter_notifications.expires > ?", Time.now)
                   }
 
   class << self

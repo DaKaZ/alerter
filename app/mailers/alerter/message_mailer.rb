@@ -4,7 +4,7 @@ class Alerter::MessageMailer < Alerter::BaseMailer
     @message  = message
     @receiver = receiver
     set_subject(message)
-    mail :to => receiver.send(Mailboxer.email_method, message),
+    mail :to => receiver.send(Alerter.email_method, message),
          :subject => t('alerter.message_mailer.subject_new', :subject => @subject),
          :template_name => 'new_message_email'
   end
