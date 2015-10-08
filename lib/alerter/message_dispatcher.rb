@@ -19,7 +19,7 @@ module Alerter
         case method
           when 'email'
 
-            binding.pry
+            # binding.pry
             if Alerter.mailer_wants_array
               send_email(filtered_recipients(method))
             else

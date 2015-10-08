@@ -25,10 +25,7 @@ describe Alerter::Mailbox do
     expect(@entity1.mailbox.inbox).to match_array([@msg1, @msg3])
   end
 
-  it "should return trash" do
-    expect(@entity1.mailbox.inbox).to match_array([@msg1])
-    @receipt3 =  @entity1.send_message("short","long","normal")
-    @msg3 = @receipt3.message
+  it "should return trash and ensure deleted messages are not shown in inbox" do
     expect(@entity1.mailbox.inbox).to match_array([@msg1, @msg3])
     @msg1.mark_as_deleted(@entity1)
     expect(@entity1.mailbox.trash).to match_array([@msg1])
@@ -47,15 +44,5 @@ describe Alerter::Mailbox do
     @msg3.mark_as_read(@entity1)
     expect(@entity1.mailbox.inbox.read).to match_array([@msg3])
   end
-
-  pending "should ensure deleted messages are not shown in inbox" do
-    expect(@entity1.mailbox.inbox.unread).to match_array([@msg1, @msg3])
-    @msg3.mark_as_deleted(@entity1)
-    expect(@entity1.mailbox.inbox.unread).to match_array([@msg1])
-    #expect(@entity1.mailbox.all_messages).to match_array([@msg1]) Should this pass?
-  end
-
-
-
 
 end
