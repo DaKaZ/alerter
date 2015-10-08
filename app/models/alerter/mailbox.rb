@@ -9,12 +9,12 @@ class Alerter::Mailbox
   #Returns the messages for the messageable
   def all_messages(options = {})
     #:type => nil is a hack not to give Messages as Notifications
-    notifs = Alerter::Message.recipient(@notifiable).where(:type => nil).order("alerter_messages.created_at DESC")
+    messages = Alerter::Message.receipts(@notifiable).where(:type => nil).order("alerter_messages.created_at DESC")
     if options[:read] == false || options[:unread]
-      notifs = notifs.unread
+      messages = messages.unread
     end
 
-    notifs
+    messages
   end
 
   #Returns the conversations for the messageable
