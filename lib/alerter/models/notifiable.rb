@@ -14,7 +14,7 @@ module Alerter
 
       included do
         has_many :messages, :class_name => "Alerter::Message", :as => :sender
-        has_many :preferences, :class_name => "Alerter::Preference", dependent: :destroy
+        has_many :preferences, :class_name => "Alerter::Preference", :as => :notifiable, dependent: :destroy
         if Rails::VERSION::MAJOR == 4
           has_many :receipts, -> { order 'created_at DESC' }, :class_name => "Alerter::Receipt", dependent: :destroy, as: :receiver
         else
@@ -126,6 +126,28 @@ module Alerter
           else
             return nil
         end
+      end
+
+      # Get the notification preferences for a given notification_type
+      # TODO: Kaz left this not working
+      def notification_methods(notification_type)
+        return [] unless notification_type.is_a?(Alerter::NotificationType)
+        prefs = preferences.find_by(alerter_notification_types_id: notification_type.id).try(:methods)
+        prefs ||= []
+      end
+
+      # configure methods for a given notification type
+      # methods can be an array of methods, a single method, or nil
+      def configure_notification_methods(notification_type, methods)
+        preference = preferences.find_or_create_by(alerter_notification_types_id: notification_type.id)
+        if methods.is_a?(Array)
+          preference.methods = methods
+        elsif methods.is_a?(String)
+          preference.methods = [ methods ]
+        elsif methods.nil?
+          preference.methods = [ ]
+        end
+        preference.save
       end
 
     end

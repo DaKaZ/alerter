@@ -35,7 +35,7 @@ class CreateAlerter < ActiveRecord::Migration
 
     #preferences
     create_table :alerter_preferences do |t|
-      t.references :alerter_notification_types
+      t.references :alerter_notification_type
       t.references :notifiable, :polymorphic => true
       t.column :methods, :text
     end

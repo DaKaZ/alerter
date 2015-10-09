@@ -13,7 +13,7 @@
 
 ActiveRecord::Schema.define(version: 20150821233449) do
 
-  create_table "alerter_messages", force: :cascade do |t|
+  create_table "alerter_messages", force: true do |t|
     t.string   "type"
     t.string   "short_msg",            default: ""
     t.text     "long_msg",             default: ""
@@ -31,18 +31,18 @@ ActiveRecord::Schema.define(version: 20150821233449) do
     t.datetime "expires"
   end
 
-  create_table "alerter_notification_types", force: :cascade do |t|
+  create_table "alerter_notification_types", force: true do |t|
     t.string "name"
   end
 
-  create_table "alerter_preferences", force: :cascade do |t|
+  create_table "alerter_preferences", force: true do |t|
     t.integer "alerter_notification_types_id"
     t.integer "notifiable_id"
     t.string  "notifiable_type"
     t.text    "methods"
   end
 
-  create_table "alerter_receipts", force: :cascade do |t|
+  create_table "alerter_receipts", force: true do |t|
     t.integer  "receiver_id"
     t.string   "receiver_type"
     t.integer  "message_id",                               null: false
@@ -56,25 +56,26 @@ ActiveRecord::Schema.define(version: 20150821233449) do
 
   add_index "alerter_receipts", ["message_id"], name: "index_alerter_receipts_on_message_id"
 
-  create_table "cylons", force: :cascade do |t|
+  create_table "cylons", force: true do |t|
     t.string   "name"
     t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "ducks", force: :cascade do |t|
+  create_table "ducks", force: true do |t|
     t.string   "name"
     t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", force: true do |t|
     t.string   "name"
     t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  Foreigner.load
 end
