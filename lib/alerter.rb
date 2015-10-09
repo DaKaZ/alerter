@@ -30,6 +30,10 @@ module Alerter
   mattr_accessor :mailer_wants_array
   @@mailer_wants_array = false
 
+  # array of available (supported) notification types
+  mattr_accessor :available_notification_types
+  @@available_notification_types = %w( info warning error action )
+
   # array of available (supported) notification methods
   mattr_accessor :available_notification_methods
   @@available_notification_methods = %w( none email ios_push android_push sms twitter )

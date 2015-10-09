@@ -1,10 +1,11 @@
 require 'spec_helper'
 
-describe Alerter::MailDispatcher do
+describe Alerter::MessageDispatcher do
 
   subject(:instance) { described_class.new(mailable, recipients) }
 
   let(:mailable)   { Alerter::Message.new }
+  # TODO use a factory instead of a double to see preferences correctly
   let(:recipient1) { double 'recipient1', alerter_email: 'test@example.com'  }
   let(:recipient2) { double 'recipient2', alerter_email: 'foo@bar.com'  }
   let(:recipients) { [ recipient1, recipient2 ] }
@@ -12,9 +13,9 @@ describe Alerter::MailDispatcher do
   # TODO - need to setup and test prefrences
   
   describe "call" do
-    context "no emails" do
-      before { Alerter.uses_emails = false }
-      after  { Alerter.uses_emails = true }
+    context "supported methods" do
+      before { Alerter.notification_method = %w( bad ) }
+      after  { Alerter.notification_method = %w( none email ios_push android_push sms twitter )}
       its(:call) { should be false }
     end
 
