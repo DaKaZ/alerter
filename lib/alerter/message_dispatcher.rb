@@ -10,7 +10,7 @@ module Alerter
     attr_reader :message, :recipients
 
     def initialize(message, recipients)
-      @mailable, @recipients = message, recipients
+      @message, @recipients = message, recipients
     end
 
     def call
@@ -22,7 +22,7 @@ module Alerter
               send_email(filtered_recipients(method))
             else
               filtered_recipients(method).each do |recipient|
-                send_email(recipient) if recipient.preferences.methods.include?(method)
+                send_email(recipient) if recipient.notification_methods(message.notification_type).include?(method) && recipient.email.present?
               end
             end
           when 'none', 'ios_push', 'android_push', 'sms', 'twitter'
@@ -36,22 +36,23 @@ module Alerter
     private
 
     def mailer
-      klass = mailable.class.name.demodulize
+      klass = message.class.name.demodulize
       method = "#{klass.downcase}_mailer".to_sym
-      Alerter.send(method) || "#{mailable.class}Mailer".constantize
+      Alerter.send(method) || "#{message.class}Mailer".constantize
     end
 
     # recipients can be filtered on a notification type basis
     def filtered_recipients(method)
       recipients.each_with_object([]) do |recipient, array|
-        array << recipient if recipient.preferences.methods.include?(method)
+        pref = recipient.preferences.find_by(notification_type: message.notification_type)
+        array << recipient if pref && recipient.notification_methods(message.notification_type).include?(method)
       end
     end
 
 
     def send_email(recipient)
       if Alerter.custom_email_delivery_proc
-        Alerter.custom_email_delivery_proc.call(mailer, mailable, recipient)
+        Alerter.custom_email_delivery_proc.call(mailer, message, recipient)
       else
         email = mailer.send_email(message, recipient)
         email.respond_to?(:deliver_now) ? email.deliver_now : email.deliver

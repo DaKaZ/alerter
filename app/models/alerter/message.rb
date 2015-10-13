@@ -15,9 +15,6 @@ class Alerter::Message < ActiveRecord::Base
   validates :long_msg,    :presence => true,
             :length => { :maximum => Alerter.long_msg_length }
 
-
-
-
   scope :receipts, lambda { |recipient|
                     joins(:receipts).where('Alerter_receipts.receiver_id' => recipient.id,'Alerter_receipts.receiver_type' => recipient.class.base_class.to_s)
                   }

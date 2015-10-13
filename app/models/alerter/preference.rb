@@ -1,17 +1,17 @@
 class Alerter::Preference < ActiveRecord::Base
   self.table_name = :alerter_preferences
-  attr_accessible :methods if Alerter.protected_attributes?
+  attr_accessible :alert_methods if Alerter.protected_attributes?
 
   belongs_to :notifiable, :polymorphic => :true
   belongs_to :notification_type
 
-  validates :alerter_notification_types_id, uniqueness: { scope: :notifiable_id }
+  validates :notification_type_id, uniqueness: { scope: :notifiable_id }
 
-  serialize :methods, Array
+  serialize :alert_methods, Array
 
-  validate :methods do
-    unless self.methods.nil? || self.methods.count == 0 || (self.methods - Alerter::available_notification_methods).empty?
-      errors.add(:methods, "Must be only: #{Alerter::available_notification_methods.join(", ")}")
+  validate :alert_methods do
+    unless self.methods.nil? || self.alert_methods.count == 0 || (self.alert_methods - Alerter::available_notification_methods).empty?
+      errors.add(:alert_methods, "Must be only: #{Alerter::available_notification_methods.join(", ")}")
     end
   end
 

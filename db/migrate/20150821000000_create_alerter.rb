@@ -28,18 +28,17 @@ class CreateAlerter < ActiveRecord::Migration
       t.datetime :expires
     end
 
+    #preferences
+    create_table :alerter_preferences do |t|
+      t.references :notification_type
+      t.references :notifiable, :polymorphic => true
+      t.column :alert_methods, :text
+    end
+
     #Notification Types
     create_table :alerter_notification_types do |t|
       t.column :name, :string, :null => :false
     end
-
-    #preferences
-    create_table :alerter_preferences do |t|
-      t.references :alerter_notification_type
-      t.references :notifiable, :polymorphic => true
-      t.column :methods, :text
-    end
-
 
     #Indexes
     #Receipts

@@ -129,23 +129,22 @@ module Alerter
       end
 
       # Get the notification preferences for a given notification_type
-      # TODO: Kaz left this not working
       def notification_methods(notification_type)
         return [] unless notification_type.is_a?(Alerter::NotificationType)
-        prefs = preferences.find_by(alerter_notification_types_id: notification_type.id).try(:methods)
+        prefs = preferences.find_by(notification_type: notification_type).try(:alert_methods)
         prefs ||= []
       end
 
       # configure methods for a given notification type
       # methods can be an array of methods, a single method, or nil
       def configure_notification_methods(notification_type, methods)
-        preference = preferences.find_or_create_by(alerter_notification_types_id: notification_type.id)
+        preference = preferences.find_or_create_by(notification_type: notification_type)
         if methods.is_a?(Array)
-          preference.methods = methods
+          preference.alert_methods = methods
         elsif methods.is_a?(String)
-          preference.methods = [ methods ]
+          preference.alert_methods = [ methods ]
         elsif methods.nil?
-          preference.methods = [ ]
+          preference.alert_methods = [ ]
         end
         preference.save
       end

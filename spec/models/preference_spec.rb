@@ -4,7 +4,7 @@ describe Alerter::Preference do
 
   before do
     @user = FactoryGirl.create(:user)
-    @notification_type = Alerter::NotificationType.create(name: 'Info');
+    @notification_type = FactoryGirl.create(:notification_type)
   end
 
   it "should return methods as an array" do
