@@ -17,7 +17,7 @@ class Alerter::BaseBuilder
   protected
 
   def get(key)
-    respond_to?(key) ? send(key) : params[key]
+    respond_to?(key, true) ? send(key) : params[key]
   end
 
   def recipients

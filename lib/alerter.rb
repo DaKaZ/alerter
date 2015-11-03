@@ -19,7 +19,7 @@ module Alerter
 
   # method used to retrieve the recipient's email
   mattr_accessor :email_method
-  @@name_method = :email
+  @@email_method = :email
 
   mattr_accessor :short_msg_length
   @@short_msg_length = 144
@@ -42,12 +42,16 @@ module Alerter
   mattr_accessor :notification_method
   @@notification_method = %w( none )
 
+  # Base url to use in messages
+  @@root_url = 'www.alerter.com'
+
   mattr_accessor :email_message_mailer
   mattr_accessor :custom_email_delivery_proc
   mattr_accessor :sms_message_mailer
   mattr_accessor :custom_sms_delivery_proc
   mattr_accessor :push_message_mailer
   mattr_accessor :custom_push_delivery_proc
+  mattr_accessor :root_url
 
   class << self
     def setup

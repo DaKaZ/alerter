@@ -33,38 +33,26 @@ class Alerter::Message < ActiveRecord::Base
   scope :read,  lambda {
                  joins(:receipts).where('Alerter_receipts.is_read' => true)
                }
-  scope :global, lambda { where(:global => true) }
-  scope :expired, lambda { where("Alerter_notifications.expires < ?", Time.now) }
+  scope :global, lambda {
+                 where(:global => true)
+               }
+  scope :expired, lambda {
+                  where("Alerter_messages.expires < ?", Time.now)
+                }
   scope :unexpired, lambda {
-                    where("Alerter_notifications.expires is NULL OR Alerter_notifications.expires > ?", Time.now)
+                    where("Alerter_messages.expires is NULL OR Alerter_messages.expires > ?", Time.now)
                   }
 
   class << self
-    #Sends a Notification to all the recipients
-    # def notify_all(recipients, short_msg, long_msg, obj = nil, sanitize_text = true, notification_code=nil, sender=nil)
-    #   notification = Alerter::MessageBuilder.new({
-    #                                                         :recipients        => recipients,
-    #                                                         :short_msg         => short_msg,
-    #                                                         :long_msg          => long_msg,
-    #                                                         :notified_object   => obj,
-    #                                                         :notification_code => notification_code,
-    #                                                         :sender            => sender
-    #                                                     }).build
-    #
-    #   notification.deliver sanitize_text
-    # end
-
-    #Takes a +Receipt+ or an +Array+ of them and returns +true+ if the delivery was
-    #successful or +false+ if some error raised
-    def successful_delivery? receipts
-      case receipts
-        when Alerter::Receipt
-          receipts.valid?
-        when Array
-          receipts.all?(&:valid?)
-        else
-          false
-      end
+    def message_all(recipients, short_msg, long_msg, notification_type_name, sanitize_text = true)
+      message = Alerter::MessageBuilder.new({
+                                                :recipients        => recipients,
+                                                :short_msg         => short_msg,
+                                                :long_msg          => long_msg,
+                                                :notification_type => Alerter::NotificationType.find_or_create_by(name: notification_type_name),
+                                            }).build
+      message.save!
+      message.deliver sanitize_text
     end
   end
 
@@ -150,6 +138,12 @@ class Alerter::Message < ActiveRecord::Base
   def mark_as_deleted(participant)
     return if participant.nil?
     return receipt_for(participant).mark_as_deleted
+  end
+
+  #Mark the notification as not deleted for one of the participant
+  def mark_as_not_deleted(participant)
+    return if participant.nil?
+    return receipt_for(participant).mark_as_not_deleted
   end
 
   #Sanitizes the body and subject

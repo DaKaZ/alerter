@@ -38,7 +38,7 @@ module Alerter
     def mailer
       klass = message.class.name.demodulize
       method = "#{klass.downcase}_mailer".to_sym
-      Alerter.send(method) || "#{message.class}Mailer".constantize
+      Alerter.methods.include?(method) ? Alerter.send(method) : "#{message.class}Mailer".constantize
     end
 
     # recipients can be filtered on a notification type basis

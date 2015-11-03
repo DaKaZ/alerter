@@ -31,6 +31,13 @@ describe Alerter::Mailbox do
     expect(@entity1.mailbox.trash).to match_array([@msg1])
   end
 
+  it "should understand the read option for all messages" do
+    expect(@entity1.mailbox.all_messages.read).to match_array([])
+    expect(@entity1.mailbox.all_messages.unread).to match_array([@msg1, @msg3])
+    @msg1.mark_as_read(@entity1)
+    expect(@entity1.mailbox.all_messages.read).to match_array([@msg1])
+  end
+
   it "should understand the read option" do
     expect(@entity1.mailbox.inbox.read).to match_array([])
     expect(@entity1.mailbox.inbox.unread).to match_array([@msg1, @msg3])

@@ -17,6 +17,9 @@ Alerter.setup do |config|
   #Configures maximum length of the message
   config.short_msg_length = 144 # twitter support
   config.long_msg_length = 2048
+
+  # Base application URL - to be used in messages
+  config.root_url = 'www.alert.com'
 end
 if Alerter::NotificationType.all.count == 0
   Alerter::NotificationType.create(name: 'Default')

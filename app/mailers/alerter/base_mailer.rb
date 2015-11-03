@@ -4,7 +4,8 @@ class Alerter::BaseMailer < ActionMailer::Base
   private
 
   def set_subject()
-    @subject  = Alerter.default_subject
+    @subject ||= Alerter.default_subject
+    strip_tags(@subject)
   end
 
   def strip_tags(text)

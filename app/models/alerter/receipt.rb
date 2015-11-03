@@ -8,17 +8,24 @@ class Alerter::Receipt < ActiveRecord::Base
   validates_presence_of :receiver
 
   scope :recipient, lambda { |recipient|
-                    where(:receiver_id => recipient.id,:receiver_type => recipient.class.base_class.to_s)
+                    where(:receiver_id => recipient.id, :receiver_type => recipient.class.base_class.to_s)
                   }
-  #Notifications Scope checks type to be nil, not Notification because of STI behaviour
-  #with the primary class (no type is saved)
-  scope :messages_receipts, lambda { joins(:message).where('alerter_notifications.type' => Alerter::Message.to_s) }
 
-  scope :inbox, lambda { where(:mailbox_type => "inbox") }
-  scope :deleted, lambda { where(:deleted => true) }
-  scope :not_deleted, lambda { where(:deleted => false) }
-  scope :is_read, lambda { where(:is_read => true) }
-  scope :is_unread, lambda { where(:is_read => false) }
+  scope :inbox, lambda {
+                where(:mailbox_type => "inbox")
+              }
+  scope :deleted, lambda {
+                  where(:deleted => true)
+                }
+  scope :not_deleted, lambda {
+                      where(:deleted => false)
+                    }
+  scope :is_read, lambda {
+                  where(:is_read => true)
+                }
+  scope :is_unread, lambda {
+                    where(:is_read => false)
+                  }
 
 
   class << self
@@ -74,10 +81,9 @@ class Alerter::Receipt < ActiveRecord::Base
     update_attributes(:is_read => false)
   end
 
-  #Returns if the participant have read the Notification
+  #Returns if the participant has read the Notification
   def is_unread?
     !is_read
   end
-
 
 end

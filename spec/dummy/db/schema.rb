@@ -11,14 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150821233449) do
+ActiveRecord::Schema.define(version: 20150821000000) do
 
   create_table "alerter_messages", force: :cascade do |t|
     t.string   "type"
     t.string   "short_msg",            default: ""
     t.text     "long_msg",             default: ""
-    t.integer  "sender_id"
-    t.string   "sender_type"
     t.boolean  "draft",                default: false
     t.string   "notification_code"
     t.integer  "notified_object_id"
@@ -36,10 +34,10 @@ ActiveRecord::Schema.define(version: 20150821233449) do
   end
 
   create_table "alerter_preferences", force: :cascade do |t|
-    t.integer "alerter_notification_types_id"
+    t.integer "notification_type_id"
     t.integer "notifiable_id"
     t.string  "notifiable_type"
-    t.text    "methods"
+    t.text    "alert_methods"
   end
 
   create_table "alerter_receipts", force: :cascade do |t|
@@ -47,7 +45,6 @@ ActiveRecord::Schema.define(version: 20150821233449) do
     t.string   "receiver_type"
     t.integer  "message_id",                               null: false
     t.boolean  "is_read",                  default: false
-    t.boolean  "trashed",                  default: false
     t.boolean  "deleted",                  default: false
     t.string   "mailbox_type",  limit: 25
     t.datetime "created_at",                               null: false

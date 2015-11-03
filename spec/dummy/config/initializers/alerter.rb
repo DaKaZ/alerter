@@ -7,8 +7,8 @@ Alerter.setup do |config|
   config.default_subject = "Alerter: you have a new message!"
 
   #Configures the methods needed by alerter to get information about the model its attached to
-  config.email_method = :email
-  config.name_method = :name
+  #config.email_method = :email
+  #config.name_method = :name
 
   #Configures the array of available (supported) notification methods
   # Available choices are: none email push sms twitter
@@ -20,5 +20,7 @@ Alerter.setup do |config|
   config.short_msg_length = 144 # twitter support
   config.long_msg_length = 2048
 
+  # Base application URL - to be used in messages
+  config.root_url = 'www.alert.com'
 
 end
