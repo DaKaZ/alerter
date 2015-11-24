@@ -4,12 +4,12 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'alerter/version'
 
 Gem::Specification.new do |s|
-  s.name = "alerter"
+  s.name = "rails-alerter"
   s.version = Alerter::VERSION
 
   s.authors = ["Michael Kazmier"]
   s.summary = "Messaging system for rails apps."
-  s.description = "Many apps need to pass basic notifications between objects and/or users, often using multiple " +
+  s.description = "Many apps need to send basic notifications to users, often using multiple " +
       "delivery methods (like email, push notifications, SMS, twitter, etc).  This gem is designed to " +
       "make that process easy and track the state of the notification in a centralized fashion."
   s.email = [ "dakazmier@gmail.com" ]

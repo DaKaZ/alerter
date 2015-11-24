@@ -27,7 +27,7 @@ We need help with testing and documention, please jump in!
 
 Add this line to your application's Gemfile:
 
-    gem 'alerter'
+    gem 'rails-alerter'
 
 And then execute:
 
