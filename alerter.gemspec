@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
       "delivery methods (like email, push notifications, SMS, twitter, etc).  This gem is designed to " +
       "make that process easy and track the state of the notification in a centralized fashion."
   s.email = [ "dakazmier@gmail.com" ]
-  s.homepage = ""
+  s.homepage = "https://github.com/DaKaZ/alerter"
   s.files = `git ls-files`.split("\n")
   s.license = 'MIT'
 
