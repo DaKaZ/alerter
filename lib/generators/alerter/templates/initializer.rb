@@ -24,6 +24,10 @@ Alerter.setup do |config|
   config.root_url = 'www.alert.com'
 end
 
-if Alerter::NotificationType.all.count == 0
-  Alerter::NotificationType.create(name: 'Default')
+# Doesn't work until migrations are in place
+begin
+  if Alerter::NotificationType.all.count == 0
+    Alerter::NotificationType.create(name: 'Default')
+  end
+rescue
 end
