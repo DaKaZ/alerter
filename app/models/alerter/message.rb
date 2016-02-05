@@ -16,7 +16,7 @@ class Alerter::Message < ActiveRecord::Base
             :length => { :maximum => Alerter.long_msg_length }
 
   scope :receipts, lambda { |recipient|
-                    joins(:receipts).where('Alerter_receipts.receiver_id' => recipient.id,'Alerter_receipts.receiver_type' => recipient.class.base_class.to_s)
+                    joins(:receipts).where('alerter_receipts.receiver_id' => recipient.id,'alerter_receipts.receiver_type' => recipient.class.base_class.to_s)
                   }
 
   scope :inbox, lambda {|recipient|
@@ -28,19 +28,19 @@ class Alerter::Message < ActiveRecord::Base
               }
 
   scope :unread,  lambda {
-                 joins(:receipts).where('Alerter_receipts.is_read' => false)
+                 joins(:receipts).where('alerter_receipts.is_read' => false)
                }
   scope :read,  lambda {
-                 joins(:receipts).where('Alerter_receipts.is_read' => true)
+                 joins(:receipts).where('alerter_receipts.is_read' => true)
                }
   scope :global, lambda {
                  where(:global => true)
                }
   scope :expired, lambda {
-                  where("Alerter_messages.expires < ?", Time.now)
+                  where("alerter_messages.expires < ?", Time.now)
                 }
   scope :unexpired, lambda {
-                    where("Alerter_messages.expires is NULL OR Alerter_messages.expires > ?", Time.now)
+                    where("alerter_messages.expires is NULL OR alerter_messages.expires > ?", Time.now)
                   }
 
   class << self

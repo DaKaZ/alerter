@@ -66,12 +66,12 @@ platforms.  You can configure the maximum length of these in the initializer:
 How can I send a message to a user?
 
     #Send a message to beta
-    Alerter::Message.notify_all(beta, "Short Message", "Long Message")
+    beta.send_message("Short Message", "Long Message", "Default")
     
 Or you can include an array of recipients
 
     recipients = [ alice, john, steve ]
-    Alerter::Message.notify_all(recipients, "Short Message", "Long Message")    
+    Alerter::Message.message_all(recipients, "Short Message", "Long Message", "Default")
     
 How can I retrieve my conversations?
     
