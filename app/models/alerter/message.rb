@@ -4,51 +4,50 @@ class Alerter::Message < ActiveRecord::Base
   attr_accessor :recipients
   attr_accessible :message, :subject, :global, :expires if Alerter.protected_attributes?
 
-  belongs_to :sender, :polymorphic => :true
   belongs_to :notified_object, :polymorphic => :true
   belongs_to :notification_type
   has_many :receipts, :dependent => :destroy, :class_name => "Alerter::Receipt"
 
   validates :notification_type, :presence => true
-  validates :short_msg,    :presence => true,
-            :length => { :maximum => Alerter.short_msg_length }
-  validates :long_msg,    :presence => true,
-            :length => { :maximum => Alerter.long_msg_length }
+  validates :short_msg, :presence => true,
+            :length => {:maximum => Alerter.short_msg_length}
+  validates :long_msg, :presence => true,
+            :length => {:maximum => Alerter.long_msg_length}
 
   scope :receipts, lambda { |recipient|
-                    joins(:receipts).where('alerter_receipts.receiver_id' => recipient.id,'alerter_receipts.receiver_type' => recipient.class.base_class.to_s)
-                  }
+    joins(:receipts).where('alerter_receipts.receiver_id' => recipient.id, 'alerter_receipts.receiver_type' => recipient.class.base_class.to_s)
+  }
 
-  scope :inbox, lambda {|recipient|
-                receipts(recipient).merge(Alerter::Receipt.inbox.not_deleted)
-              }
+  scope :inbox, lambda { |recipient|
+    receipts(recipient).merge(Alerter::Receipt.inbox.not_deleted)
+  }
 
-  scope :trash, lambda {|recipient|
-                receipts(recipient).merge(Alerter::Receipt.deleted)
-              }
+  scope :trash, lambda { |recipient|
+    receipts(recipient).merge(Alerter::Receipt.deleted)
+  }
 
-  scope :unread,  lambda {
-                 joins(:receipts).where('alerter_receipts.is_read' => false)
-               }
-  scope :read,  lambda {
-                 joins(:receipts).where('alerter_receipts.is_read' => true)
-               }
+  scope :unread, lambda {
+    joins(:receipts).where('alerter_receipts.is_read' => false)
+  }
+  scope :read, lambda {
+    joins(:receipts).where('alerter_receipts.is_read' => true)
+  }
   scope :global, lambda {
-                 where(:global => true)
-               }
+    where(:global => true)
+  }
   scope :expired, lambda {
-                  where("alerter_messages.expires < ?", Time.now)
-                }
+    where("alerter_messages.expires < ?", Time.now)
+  }
   scope :unexpired, lambda {
-                    where("alerter_messages.expires is NULL OR alerter_messages.expires > ?", Time.now)
-                  }
+    where("alerter_messages.expires is NULL OR alerter_messages.expires > ?", Time.now)
+  }
 
   class << self
     def message_all(recipients, short_msg, long_msg, notification_type_name, sanitize_text = true)
       message = Alerter::MessageBuilder.new({
-                                                :recipients        => recipients,
-                                                :short_msg         => short_msg,
-                                                :long_msg          => long_msg,
+                                                :recipients => recipients,
+                                                :short_msg => short_msg,
+                                                :long_msg => long_msg,
                                                 :notification_type => Alerter::NotificationType.find_or_create_by(name: notification_type_name),
                                             }).build
       message.save!
@@ -74,12 +73,12 @@ class Alerter::Message < ActiveRecord::Base
   end
 
   #Delivers a Notification. USE NOT RECOMENDED.
-  #Use Alerter::Models::Message.notify and Notification.notify_all instead.
+  #Use Alerter::Models::Message.message and Notification.message_all instead.
   def deliver(should_clean = true)
     clean if should_clean
     temp_receipts = recipients.map { |r| build_receipt(r, 'inbox', false) }
     if temp_receipts.all?(&:valid?)
-      temp_receipts.each(&:save!)   #Save receipts
+      temp_receipts.each(&:save!) #Save receipts
       Alerter::MessageDispatcher.new(self, recipients).call
       #self.recipients = nil
     end
@@ -161,11 +160,11 @@ class Alerter::Message < ActiveRecord::Base
 
   def build_receipt(receiver, mailbox_type, is_read = false)
     Alerter::ReceiptBuilder.new({
-                                      :message => self,
-                                      :mailbox_type => mailbox_type,
-                                      :receiver     => receiver,
-                                      :is_read      => is_read
-                                  }).build
+                                    :message => self,
+                                    :mailbox_type => mailbox_type,
+                                    :receiver => receiver,
+                                    :is_read => is_read
+                                }).build
   end
 
 end

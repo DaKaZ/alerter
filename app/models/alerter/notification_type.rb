@@ -1,7 +1,6 @@
 class Alerter::NotificationType < ActiveRecord::Base
   self.table_name = :alerter_notification_types
 
-
   attr_accessible :name if Alerter.protected_attributes?
 
   #belongs_to :message
