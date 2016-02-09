@@ -4,7 +4,7 @@ class Alerter::NotificationType < ActiveRecord::Base
   attr_accessible :name if Alerter.protected_attributes?
 
   #belongs_to :message
-  has_many :preferences
+  has_many :alerter_preferences
   has_many :messages
   before_save :check_notification_type
 
@@ -13,7 +13,7 @@ class Alerter::NotificationType < ActiveRecord::Base
 
   protected
   def check_notification_type
-    Alerter.available_notification_types.include?(self.name)
+    raise 'Notifcation type is not allowed' unless Alerter.available_notification_types.include?(self.name)
   end
 
 end

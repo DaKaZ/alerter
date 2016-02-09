@@ -23,4 +23,5 @@ Alerter.setup do |config|
   # Base application URL - to be used in messages
   config.root_url = 'www.alert.com'
 
+  config.available_notification_types = ['General', 'MyType', 'info', 'warning', 'error', 'normal']
 end

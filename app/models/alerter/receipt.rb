@@ -8,24 +8,24 @@ class Alerter::Receipt < ActiveRecord::Base
   validates_presence_of :receiver
 
   scope :recipient, lambda { |recipient|
-                    where(:receiver_id => recipient.id, :receiver_type => recipient.class.base_class.to_s)
-                  }
+    where(:receiver_id => recipient.id, :receiver_type => recipient.class.base_class.to_s)
+  }
 
   scope :inbox, lambda {
-                where(:mailbox_type => "inbox")
-              }
+    where(:mailbox_type => "inbox")
+  }
   scope :deleted, lambda {
-                  where(:deleted => true)
-                }
+    where(:deleted => true)
+  }
   scope :not_deleted, lambda {
-                      where(:deleted => false)
-                    }
+    where(:deleted => false)
+  }
   scope :is_read, lambda {
-                  where(:is_read => true)
-                }
+    where(:is_read => true)
+  }
   scope :is_unread, lambda {
-                    where(:is_read => false)
-                  }
+    where(:is_read => false)
+  }
 
 
   class << self

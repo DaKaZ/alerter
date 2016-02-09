@@ -44,7 +44,7 @@ module Alerter
     # recipients can be filtered on a notification type basis
     def filtered_recipients(method)
       recipients.each_with_object([]) do |recipient, array|
-        pref = recipient.preferences.find_by(notification_type: message.notification_type)
+        pref = recipient.alerter_preferences.find_by(notification_type: message.notification_type)
         array << recipient if pref && recipient.notification_methods(message.notification_type).include?(method)
       end
     end

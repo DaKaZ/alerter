@@ -15,7 +15,7 @@ module Alerter
       included do
         #We don't use sender - System is the sender - get messages by member.mailbox.inbox
         #has_many :messages, :class_name => "Alerter::Message", :as => :sender
-        has_many :preferences, :class_name => "Alerter::Preference", :as => :notifiable, dependent: :destroy
+        has_many :alerter_preferences, :class_name => "Alerter::Preference", :as => :notifiable, dependent: :destroy
         if Rails::VERSION::MAJOR == 4
           has_many :receipts, -> { order 'created_at DESC' }, :class_name => "Alerter::Receipt", dependent: :destroy, as: :receiver
         else
@@ -152,14 +152,14 @@ module Alerter
       # Get the notification preferences for a given notification_type
       def notification_methods(notification_type)
         return [] unless notification_type.is_a?(Alerter::NotificationType)
-        prefs = preferences.find_by(notification_type: notification_type).try(:alert_methods)
+        prefs = alerter_preferences.find_by(notification_type: notification_type).try(:alert_methods)
         prefs ||= []
       end
 
       # configure methods for a given notification type
       # methods can be an array of methods, a single method, or nil
       def configure_notification_methods(notification_type, methods)
-        preference = preferences.find_or_create_by(notification_type: notification_type)
+        preference = alerter_preferences.find_or_create_by(notification_type: notification_type)
         if methods.is_a?(Array)
           preference.alert_methods = methods
         elsif methods.is_a?(String)
