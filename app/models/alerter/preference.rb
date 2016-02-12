@@ -6,6 +6,7 @@ class Alerter::Preference < ActiveRecord::Base
   belongs_to :notification_type
 
   validates :notification_type_id, uniqueness: { scope: :notifiable_id }
+  validates_presence_of :notification_type_id
 
   serialize :alert_methods, Array
 
