@@ -25,7 +25,7 @@ module Alerter
                 send_email(recipient) if recipient.notification_methods(message.notification_type).include?(method) && recipient.email.present?
               end
             end
-          when 'none', 'ios_push', 'android_push', 'sms', 'twitter'
+          when 'ios_push', 'android_push', 'sms', 'twitter', 'in_app'
 
           else
             raise MethodNotImplemented.new(method)

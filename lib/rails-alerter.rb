@@ -34,11 +34,11 @@ module Alerter
   mattr_accessor :available_notification_types
   @@available_notification_types = %w( info warning error action )
 
-  # array of available (supported) notification methods
+  # array of available (supported) notification methods for this application
   mattr_accessor :available_notification_methods
-  @@available_notification_methods = %w( none email ios_push android_push sms twitter )
+  @@available_notification_methods = %w( in_app email ios_push android_push sms twitter )
 
-  # the chosen notification method for this object
+  # array of available (supported) notification methods for the plugin
   mattr_accessor :notification_method
   @@notification_method = %w( none )
 

@@ -1,20 +1,18 @@
 Alerter.setup do |config|
 
   #Configures the default from for emails sent for Messages
-  config.default_from = "no-reply@alert.com"
+  config.default_from = 'no-reply@alert.com'
 
   #Configures the default subject line (only used in emails)
-  config.default_subject = "Alerter: you have a new message!"
+  config.default_subject = 'Alerter: you have a new message!'
 
   #Configures the methods needed by alerter to get information about the model its attached to
   #config.email_method = :email
   #config.name_method = :name
 
   #Configures the array of available (supported) notification methods
-  # Available choices are: none email push sms twitter
-  config.available_notification_methods = %w( none email ios_push android_push sms twitter )
-
-  config.notification_method = %w( none email ios_push android_push sms twitter )
+  # Available choices are: in_app email ios_push android_push sms twitter
+  config.available_notification_methods = %w( in_app email ios_push android_push sms twitter )
 
   #Configures maximum length of the message
   config.short_msg_length = 144 # twitter support
@@ -22,6 +20,9 @@ Alerter.setup do |config|
 
   # Base application URL - to be used in messages
   config.root_url = 'www.alert.com'
+
+  # Types of Notification Events
+  config.available_notification_types = ['Default']
 end
 
 # Doesn't work until migrations are in place
