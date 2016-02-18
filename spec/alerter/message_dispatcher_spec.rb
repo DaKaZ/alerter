@@ -12,7 +12,7 @@ describe Alerter::MessageDispatcher do
   describe "call" do
     context "supported methods" do
       before { Alerter.notification_method = %w( bad ) }
-      after  { Alerter.notification_method = %w( none email ios_push android_push sms twitter )}
+      after  { Alerter.notification_method = %w( in_app email ios_push android_push sms twitter )}
       its(:call) { should be false }
     end
 
