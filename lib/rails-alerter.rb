@@ -7,11 +7,11 @@ module Alerter
 
   # Default from address for email notifications
   mattr_accessor :default_from
-  @@default_from = "no-reply@alerter.com"
+  @@default_from = 'no-reply@alerter.com'
 
   # default subject to use on emails only
   mattr_accessor :default_subject
-  @@default_from = "Alerter: you have a new message!"
+  @@default_from = 'Alerter: you have a new message!'
 
   # method used to retrieve the recipient's name
   mattr_accessor :name_method
@@ -38,9 +38,19 @@ module Alerter
   mattr_accessor :available_notification_methods
   @@available_notification_methods = %w( in_app email ios_push android_push sms twitter )
 
+  mattr_accessor :available_notification_methods_friendly
+  @@available_notification_methods_friendly = {
+      in_app: 'In Application',
+      email: 'Email',
+      ios_push: 'Apple Device',
+      android_push: 'Android Device',
+      sms: 'Text Message',
+      twitter: 'Twitter'
+  }
+
   # array of available (supported) notification methods for the plugin
   mattr_accessor :notification_method
-  @@notification_method = %w( none )
+  @@notification_method = %w( in_app )
 
   # Base url to use in messages
   @@root_url = 'www.alerter.com'

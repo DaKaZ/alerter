@@ -1,10 +1,10 @@
 Alerter.setup do |config|
 
   #Configures the default from for emails sent for Messages
-  config.default_from = "no-reply@alert.com"
+  config.default_from = 'no-reply@alert.com'
 
   #Configures the default subject line (only used in emails)
-  config.default_subject = "Alerter: you have a new message!"
+  config.default_subject = 'Alerter: you have a new message!'
 
   #Configures the methods needed by alerter to get information about the model its attached to
   #config.email_method = :email
@@ -23,5 +23,5 @@ Alerter.setup do |config|
   # Base application URL - to be used in messages
   config.root_url = 'www.alert.com'
 
-  config.available_notification_types = ['General', 'MyType', 'info', 'warning', 'error', 'normal']
+  config.available_notification_types = %w(General MyType info warning error normal)
 end

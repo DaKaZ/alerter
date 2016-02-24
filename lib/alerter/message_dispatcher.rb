@@ -26,7 +26,7 @@ module Alerter
               end
             end
           when 'ios_push', 'android_push', 'sms', 'twitter', 'in_app'
-
+            # TODO: get these other types working
           else
             raise MethodNotImplemented.new(method)
         end
