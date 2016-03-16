@@ -13,7 +13,7 @@ class Alerter::NotificationType < ActiveRecord::Base
 
   protected
   def check_notification_type
-    raise 'Notifcation type is not allowed' unless Alerter.available_notification_types.include?(self.name)
+    raise 'Notification type is not allowed' unless Alerter.available_notification_types.include?(self.name)
   end
 
 end

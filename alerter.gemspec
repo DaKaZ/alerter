@@ -4,16 +4,16 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'alerter/version'
 
 Gem::Specification.new do |s|
-  s.name = "rails-alerter"
+  s.name = 'rails-alerter'
   s.version = Alerter::VERSION
 
-  s.authors = ["Michael Kazmier"]
-  s.summary = "Messaging system for rails apps."
-  s.description = "Many apps need to send basic notifications to users, often using multiple " +
-      "delivery methods (like email, push notifications, SMS, twitter, etc).  This gem is designed to " +
-      "make that process easy and track the state of the notification in a centralized fashion."
-  s.email = [ "dakazmier@gmail.com" ]
-  s.homepage = "https://github.com/DaKaZ/alerter"
+  s.authors = ['Michael Kazmier']
+  s.summary = 'Messaging system for rails apps.'
+  s.description = 'Many apps need to send basic notifications to users, often using multiple ' +
+      'delivery methods (like email, push notifications, SMS, twitter, etc).  This gem is designed to ' +
+      'make that process easy and track the state of the notification in a centralized fashion.'
+  s.email = ['dakazmier@gmail.com']
+  s.homepage = 'https://github.com/DaKaZ/alerter'
   s.files = `git ls-files`.split("\n")
   s.license = 'MIT'
 
@@ -24,8 +24,9 @@ Gem::Specification.new do |s|
 
   # Development Gem dependencies
   s.add_runtime_dependency('rails', '>= 3.2.0')
+  s.add_runtime_dependency('rpush', '~> 2.7.0')
 
-  if RUBY_ENGINE == "rbx" && RUBY_VERSION >= "2.1.0"
+  if RUBY_ENGINE == 'rbx' && RUBY_VERSION >= '2.1.0'
     # Rubinius has it's own dependencies
     s.add_runtime_dependency     'rubysl'
     s.add_development_dependency 'racc'

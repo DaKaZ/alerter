@@ -21,6 +21,26 @@ module Alerter
   mattr_accessor :email_method
   @@email_method = :email
 
+  # method used to retrieve the recipient's ios device token
+  mattr_accessor :ios_token_method
+  @@ios_token_method = :ios_token
+
+  # method used to retrieve the recipient's ios app name
+  mattr_accessor :ios_app_name
+  @@ios_app_name = 'ios_app'
+
+  # method used to retrieve the recipient's android device token
+  mattr_accessor :android_token_method
+  @@android_token_method = :android_token
+
+  # method used to retrieve the recipient's android app name
+  mattr_accessor :android_app_name
+  @@android_app_name = 'android_app'
+
+  # method used to retrieve the recipient's android app name
+  mattr_accessor :android_priority
+  @@android_priority = 'normal'
+
   mattr_accessor :short_msg_length
   @@short_msg_length = 144
 
@@ -48,7 +68,7 @@ module Alerter
       twitter: 'Twitter'
   }
 
-  # array of available (supported) notification methods for the plugin
+  # array of available (supported) notification methods for the app using this
   mattr_accessor :notification_method
   @@notification_method = %w( in_app )
 
@@ -57,10 +77,10 @@ module Alerter
 
   mattr_accessor :email_message_mailer
   mattr_accessor :custom_email_delivery_proc
+  mattr_accessor :custom_ios_push_delivery_proc
+  mattr_accessor :custom_android_push_delivery_proc
   mattr_accessor :sms_message_mailer
   mattr_accessor :custom_sms_delivery_proc
-  mattr_accessor :push_message_mailer
-  mattr_accessor :custom_push_delivery_proc
   mattr_accessor :root_url
 
   class << self

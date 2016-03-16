@@ -1,3 +1,4 @@
+require 'rpush'
 module Alerter
   class MethodNotImplemented < StandardError
     def initialize(data)
@@ -22,11 +23,23 @@ module Alerter
               send_email(filtered_recipients(method))
             else
               filtered_recipients(method).each do |recipient|
-                send_email(recipient) if recipient.notification_methods(message.notification_type).include?(method) && recipient.email.present?
+                send_email(recipient) if recipient.send(Alerter.email_method).present?
+                # filtered_re.. should enforce the not_method logic?
+                #send_email(recipient) if recipient.notification_methods(message.notification_type).include?(method) && recipient.email.present?
               end
             end
-          when 'ios_push', 'android_push', 'sms', 'twitter', 'in_app'
+          when 'ios_push'
+            filtered_recipients(method).each do |recipient|
+              send_ios_alert(recipient)
+            end
+          when 'android_push'
+            filtered_recipients(method).each do |recipient|
+              send_android_alert(recipient)
+            end
+          when 'sms', 'twitter'
             # TODO: get these other types working
+          when 'in_app'
+            # Handled externally to alerter
           else
             raise MethodNotImplemented.new(method)
         end
@@ -57,6 +70,38 @@ module Alerter
         email = mailer.send_email(message, recipient)
         email.respond_to?(:deliver_now) ? email.deliver_now : email.deliver
       end
+    end
+
+    def send_ios_alert(recipient)
+      if Alerter.custom_ios_push_delivery_proc
+        Alerter.custom_ios_push_delivery_proc.call(message, recipient)
+      else
+        n = Rpush::Apns::Notification.new
+        n.app = Rpush::Apns::App.find_by(name: Alerter.ios_app_name)
+        n.device_token = recipient.send(Alerter.ios_token_method)
+        n.alert = message.short_msg
+        n.data = message.attributes
+        n.save!
+      end
+    end
+
+    def send_android_alert(recipient)
+      if Alerter.custom_android_push_delivery_proc
+        Alerter.custom_android_push_delivery_proc.call(message, recipient)
+      else
+        n = Rpush::Gcm::Notification.new
+        n.app = Rpush::Gcm::App.find_by(name: Alerter.android_app_name)
+        n.registration_ids = [recipient.send(Alerter.android_token_method)]
+        n.data = { message: message.short_msg }
+        n.priority = (Alerter.android_priority)
+        # n.content_available = true # Optional
+        # # Optional notification payload. See the reference below for more keys you can use!
+        # n.notification = { body: 'great match!',
+        #                    title: 'Portugal vs. Denmark',
+        #                    icon: 'myicon'
+        # }
+        n.save!
+        end
     end
   end
 end

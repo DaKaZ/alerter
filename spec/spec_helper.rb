@@ -1,9 +1,10 @@
 # Configure Rails Envinronment
 ENV["RAILS_ENV"] = "test"
 require 'simplecov'
+SimpleCov.start
 
-require File.expand_path("../dummy/config/environment.rb",  __FILE__)
-require "rspec/rails"
+require File.expand_path('../dummy/config/environment.rb', __FILE__)
+require 'rspec/rails'
 
 require 'rspec/its'
 require 'rspec/collection_matchers'
