@@ -7,14 +7,9 @@ FactoryGirl.define do
         create_list(:email_prefs, 1, notifiable: user)
       end
     end
-    factory :user_with_ios_pref do
+    factory :user_with_push_pref do
       after(:create) do |user|
-        create_list(:ios_prefs, 1, notifiable: user)
-      end
-    end
-    factory :user_with_android_pref do
-      after(:create) do |user|
-        create_list(:android_prefs, 1, notifiable: user)
+        create_list(:push_prefs, 1, notifiable: user)
       end
     end
   end
@@ -34,13 +29,8 @@ FactoryGirl.define do
     association :notification_type
   end
 
-  factory :ios_prefs, class: Alerter::Preference do
-    alert_methods %w(ios_push)
-    association :notification_type
-  end
-
-  factory :android_prefs, class: Alerter::Preference do
-    alert_methods %w(android_push)
+  factory :push_prefs, class: Alerter::Preference do
+    alert_methods %w(push_notification)
     association :notification_type
   end
 

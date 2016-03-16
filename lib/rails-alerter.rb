@@ -21,17 +21,13 @@ module Alerter
   mattr_accessor :email_method
   @@email_method = :email
 
-  # method used to retrieve the recipient's ios device token
-  mattr_accessor :ios_token_method
-  @@ios_token_method = :ios_token
+  # method used to retrieve the recipient's push device info
+  mattr_accessor :push_data_method
+  @@push_data_method = :push_data
 
   # method used to retrieve the recipient's ios app name
   mattr_accessor :ios_app_name
   @@ios_app_name = 'ios_app'
-
-  # method used to retrieve the recipient's android device token
-  mattr_accessor :android_token_method
-  @@android_token_method = :android_token
 
   # method used to retrieve the recipient's android app name
   mattr_accessor :android_app_name
@@ -56,14 +52,13 @@ module Alerter
 
   # array of available (supported) notification methods for this application
   mattr_accessor :available_notification_methods
-  @@available_notification_methods = %w( in_app email ios_push android_push sms twitter )
+  @@available_notification_methods = %w( in_app email push_notification sms twitter )
 
   mattr_accessor :available_notification_methods_friendly
   @@available_notification_methods_friendly = {
       in_app: 'In Application',
       email: 'Email',
-      ios_push: 'Apple Device',
-      android_push: 'Android Device',
+      push_notification: 'Mobile Device',
       sms: 'Text Message',
       twitter: 'Twitter'
   }
@@ -77,8 +72,7 @@ module Alerter
 
   mattr_accessor :email_message_mailer
   mattr_accessor :custom_email_delivery_proc
-  mattr_accessor :custom_ios_push_delivery_proc
-  mattr_accessor :custom_android_push_delivery_proc
+  mattr_accessor :custom_push_delivery_proc
   mattr_accessor :sms_message_mailer
   mattr_accessor :custom_sms_delivery_proc
   mattr_accessor :root_url

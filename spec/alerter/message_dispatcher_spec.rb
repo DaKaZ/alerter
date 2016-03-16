@@ -11,14 +11,14 @@ describe Alerter::MessageDispatcher do
   let(:message)   { FactoryGirl.create :message }
   let(:recipient1) { FactoryGirl.create :user_with_email_pref, email: nil  }
   let(:recipient2) { FactoryGirl.create :user_with_email_pref  }
-  let(:recipient3) { FactoryGirl.create :user_with_ios_pref  }
-  let(:recipient4) { FactoryGirl.create :user_with_android_pref  }
+  let(:recipient3) { FactoryGirl.create :user_with_push_pref  }
+  let(:recipient4) { FactoryGirl.create :user_with_push_pref  }
   let(:recipients) { [ recipient1, recipient2, recipient3, recipient4 ] }
 
   describe 'call' do
     context 'supported methods' do
       before { Alerter.notification_method = %w( bad ) }
-      after  { Alerter.notification_method = %w( in_app email ios_push android_push sms twitter )}
+      after  { Alerter.notification_method = %w( in_app email push_notification sms twitter )}
       its(:call) { should be false }
     end
 
@@ -27,8 +27,8 @@ describe Alerter::MessageDispatcher do
       after  { Alerter.mailer_wants_array = false }
       it 'sends collection' do
         expect(subject).to receive(:send_email).with([recipient1, recipient2])
-        expect(subject).to receive(:send_ios_alert).with(recipient3)
-        expect(subject).to receive(:send_android_alert).with(recipient4)
+        expect(subject).to receive(:send_push_alert).with(recipient3)
+        expect(subject).to receive(:send_push_alert).with(recipient4)
         subject.call
       end
     end
@@ -37,8 +37,8 @@ describe Alerter::MessageDispatcher do
       it 'sends collection' do
         expect(subject).not_to receive(:send_email).with(recipient1) #email is blank
         expect(subject).to receive(:send_email).with(recipient2)
-        expect(subject).to receive(:send_ios_alert).with(recipient3)
-        expect(subject).to receive(:send_android_alert).with(recipient4)
+        expect(subject).to receive(:send_push_alert).with(recipient3)
+        expect(subject).to receive(:send_push_alert).with(recipient4)
         subject.call
       end
     end
@@ -75,51 +75,42 @@ describe Alerter::MessageDispatcher do
     end
   end
 
-  describe 'send_ios_push_notification' do
+  describe 'send_push_notification' do
 
     context 'with custom_deliver_proc' do
       let(:my_proc) { double 'proc' }
 
-      before { Alerter.custom_ios_push_delivery_proc = my_proc }
-      after  { Alerter.custom_ios_push_delivery_proc = nil     }
+      before { Alerter.custom_push_delivery_proc = my_proc }
+      after  { Alerter.custom_push_delivery_proc = nil     }
       it 'triggers proc' do
         expect(my_proc).to receive(:call).with(message, recipient1)
-        subject.send :send_ios_alert, recipient1
+        subject.send :send_push_alert, recipient1
       end
     end
 
     context 'without custom_proc' do
-      it 'triggers standard deliver chain' do
+      it 'ios triggers standard deliver chain' do
         FactoryGirl.create(:ios_app)
+        expect(recipient3).to receive(:push_data).and_return([{type: :ios, token: 'a' * 64}])
         expect {
-          subject.send :send_ios_alert, recipient1
+          subject.send :send_push_alert, recipient3
         }.to change(Rpush::Apns::Notification, :count).by(1)
       end
-    end
-  end
 
-  describe 'send_android_push_notification' do
-
-    context 'with custom_deliver_proc' do
-      let(:my_proc) { double 'proc' }
-
-      before { Alerter.custom_android_push_delivery_proc = my_proc }
-      after  { Alerter.custom_android_push_delivery_proc = nil     }
-      it 'triggers proc' do
-        expect(my_proc).to receive(:call).with(message, recipient1)
-        subject.send :send_android_alert, recipient1
-      end
-    end
-
-    context 'without custom_proc' do
-      it 'triggers standard deliver chain' do
+      it 'android triggers standard deliver chain' do
         FactoryGirl.create(:android_app)
+        expect(recipient4).to receive(:push_data).and_return([{type: :android, token: 'b' * 64}])
         expect {
-          subject.send :send_android_alert, recipient1
+          subject.send :send_push_alert, recipient4
         }.to change(Rpush::Gcm::Notification, :count).by(1)
       end
+
+      it 'multiple device delivery' do
+        expect(recipient4).to receive(:push_data).and_return([{type: :android, token: 'b' * 64}, {type: :ios, token: 'a' * 64}])
+        expect {
+          subject.send :send_push_alert, recipient4
+        }.to change(Rpush::Notification, :count).by(2)
+      end
     end
   end
-
-
 end

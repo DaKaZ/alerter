@@ -28,13 +28,9 @@ module Alerter
                 #send_email(recipient) if recipient.notification_methods(message.notification_type).include?(method) && recipient.email.present?
               end
             end
-          when 'ios_push'
+          when 'push_notification'
             filtered_recipients(method).each do |recipient|
-              send_ios_alert(recipient)
-            end
-          when 'android_push'
-            filtered_recipients(method).each do |recipient|
-              send_android_alert(recipient)
+              send_push_alert(recipient)
             end
           when 'sms', 'twitter'
             # TODO: get these other types working
@@ -72,27 +68,44 @@ module Alerter
       end
     end
 
-    def send_ios_alert(recipient)
-      if Alerter.custom_ios_push_delivery_proc
-        Alerter.custom_ios_push_delivery_proc.call(message, recipient)
+    def send_push_alert(recipient)
+      if Alerter.custom_push_delivery_proc
+        Alerter.custom_push_delivery_proc.call(message, recipient)
       else
+        push_data = recipient.send(Alerter.push_data_method)
+        unless push_data.nil?
+          results = []
+          push_data.each do |pd|
+            case pd[:type]
+              when :ios
+                results << send_ios_alert(pd[:token])
+              when :android
+                results << send_android_alert(pd[:token])
+              else
+                results << false
+            end
+          end
+        end
+      end
+    end
+
+    def send_ios_alert(token)
+      unless token.nil?
         n = Rpush::Apns::Notification.new
         n.app = Rpush::Apns::App.find_by(name: Alerter.ios_app_name)
-        n.device_token = recipient.send(Alerter.ios_token_method)
+        n.device_token = token
         n.alert = message.short_msg
         n.data = message.attributes
         n.save!
       end
     end
 
-    def send_android_alert(recipient)
-      if Alerter.custom_android_push_delivery_proc
-        Alerter.custom_android_push_delivery_proc.call(message, recipient)
-      else
+    def send_android_alert(token)
+      unless token.nil?
         n = Rpush::Gcm::Notification.new
         n.app = Rpush::Gcm::App.find_by(name: Alerter.android_app_name)
-        n.registration_ids = [recipient.send(Alerter.android_token_method)]
-        n.data = { message: message.short_msg }
+        n.registration_ids = [token]
+        n.data = {message: message.short_msg}
         n.priority = (Alerter.android_priority)
         # n.content_available = true # Optional
         # # Optional notification payload. See the reference below for more keys you can use!
@@ -101,7 +114,7 @@ module Alerter
         #                    icon: 'myicon'
         # }
         n.save!
-        end
+      end
     end
   end
 end

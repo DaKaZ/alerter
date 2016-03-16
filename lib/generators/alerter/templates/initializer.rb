@@ -9,16 +9,16 @@ Alerter.setup do |config|
   #Configures the methods needed by alerter to get information about the model its attached to
   #config.email_method = :email
   #config.name_method = :name
-  #config.ios_token_method = :ios_token
-  #config.android_token_method = :android_token
+  #config.push_data_method = :push_data
 
   #config.ios_app_name = 'ios_app'
   #config.android_app_name = 'android_app'
   #config.android_priority = 'normal' #high
 
-  #Configures the array of available (supported) notification methods
-  # Available choices are: in_app email ios_push android_push sms twitter
-  config.available_notification_methods = %w( in_app email ios_push android_push sms twitter )
+  #Configures the array of supported notification methods for your application
+  # Available choices are: in_app email push_notification
+  # sms twitter <- coming soon-ish
+  config.notification_method = %w( in_app email push_notification sms twitter )
 
   #Configures maximum length of the message
   config.short_msg_length = 144 # twitter support
