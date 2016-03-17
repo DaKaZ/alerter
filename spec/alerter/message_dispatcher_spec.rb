@@ -93,7 +93,7 @@ describe Alerter::MessageDispatcher do
         FactoryGirl.create(:ios_app)
         expect(recipient3).to receive(:push_data).and_return([{type: :ios, token: 'a' * 64}])
         expect {
-          subject.send :send_push_alert, recipient3
+          expect(subject.send :send_push_alert, recipient3).to eq [true]
         }.to change(Rpush::Apns::Notification, :count).by(1)
       end
 
@@ -101,15 +101,29 @@ describe Alerter::MessageDispatcher do
         FactoryGirl.create(:android_app)
         expect(recipient4).to receive(:push_data).and_return([{type: :android, token: 'b' * 64}])
         expect {
-          subject.send :send_push_alert, recipient4
+          expect(subject.send :send_push_alert, recipient4).to eq [true]
         }.to change(Rpush::Gcm::Notification, :count).by(1)
       end
 
       it 'multiple device delivery' do
         expect(recipient4).to receive(:push_data).and_return([{type: :android, token: 'b' * 64}, {type: :ios, token: 'a' * 64}])
         expect {
-          subject.send :send_push_alert, recipient4
+          expect(subject.send :send_push_alert, recipient4).to eq [true, true]
         }.to change(Rpush::Notification, :count).by(2)
+      end
+
+      it 'reports any failed deliveries' do
+        expect(recipient4).to receive(:push_data).and_return([{type: :bad, token: 'b' * 64}, {type: :ios, token: 'a' * 64}])
+        expect {
+          expect(subject.send :send_push_alert, recipient4).to eq [false, true]
+        }.to change(Rpush::Notification, :count).by(1)
+      end
+
+      it 'handles empty data' do
+        expect(recipient4).to receive(:push_data).and_return('')
+        expect {
+          expect(subject.send :send_push_alert, recipient4).to eq false
+        }.to change(Rpush::Notification, :count).by(0)
       end
     end
   end

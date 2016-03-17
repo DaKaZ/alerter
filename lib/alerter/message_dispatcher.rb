@@ -73,7 +73,7 @@ module Alerter
         Alerter.custom_push_delivery_proc.call(message, recipient)
       else
         push_data = recipient.send(Alerter.push_data_method)
-        unless push_data.nil?
+        if push_data.is_a?(Array)
           results = []
           push_data.each do |pd|
             case pd[:type]
@@ -85,7 +85,9 @@ module Alerter
                 results << false
             end
           end
+          return results
         end
+        false
       end
     end
 
