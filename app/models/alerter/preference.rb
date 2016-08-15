@@ -16,7 +16,7 @@ class Alerter::Preference < ActiveRecord::Base
 
   validate :alert_methods do
     unless self.methods.nil? || self.alert_methods.count == 0 || (self.alert_methods - Alerter::available_notification_methods).empty?
-      errors.add(:alert_methods, "Must be only: #{Alerter::available_notification_methods.join(", ")}")
+      errors.add(:alert_methods, "Must be only: #{Alerter::notification_method.join(", ")}")
     end
   end
 
