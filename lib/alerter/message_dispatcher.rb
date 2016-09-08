@@ -98,7 +98,7 @@ module Alerter
         n.device_token = token
         n.alert = message.short_msg
         n.data = message.attributes
-        n.save!
+        n.save
       end
     end
 
@@ -115,7 +115,7 @@ module Alerter
         #                    title: 'Portugal vs. Denmark',
         #                    icon: 'myicon'
         # }
-        n.save!
+        n.save
       end
     end
   end
