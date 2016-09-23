@@ -97,7 +97,7 @@ module Alerter
         n.app = Rpush::Apns::App.find_by(name: Alerter.ios_app_name)
         n.device_token = token
         n.alert = message.short_msg
-        n.data = message.push_data
+        n.data = {data: message.push_data}
         n.save
       end
     end
