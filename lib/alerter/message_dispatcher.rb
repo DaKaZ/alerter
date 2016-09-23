@@ -97,7 +97,7 @@ module Alerter
         n.app = Rpush::Apns::App.find_by(name: Alerter.ios_app_name)
         n.device_token = token
         n.alert = message.short_msg
-        n.data = message.attributes
+        n.data = message.push_data
         n.save
       end
     end
@@ -107,7 +107,7 @@ module Alerter
         n = Rpush::Gcm::Notification.new
         n.app = Rpush::Gcm::App.find_by(name: Alerter.android_app_name)
         n.registration_ids = [token]
-        n.data = {message: message.short_msg}
+        n.data = {message: message.short_msg, data: message.push_data}
         n.priority = (Alerter.android_priority)
         # n.content_available = true # Optional
         # # Optional notification payload. See the reference below for more keys you can use!
