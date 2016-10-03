@@ -109,12 +109,6 @@ module Alerter
         n.registration_ids = [token]
         n.data = {message: message.short_msg, data: message.push_data}
         n.priority = (Alerter.android_priority)
-        # n.content_available = true # Optional
-        # # Optional notification payload. See the reference below for more keys you can use!
-        # n.notification = { body: 'great match!',
-        #                    title: 'Portugal vs. Denmark',
-        #                    icon: 'myicon'
-        # }
         n.save
       end
     end

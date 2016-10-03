@@ -78,6 +78,7 @@ class Alerter::Message < ActiveRecord::Base
   #Use Alerter::Models::Message.message and Notification.message_all instead.
   def deliver(should_clean = true)
     clean if should_clean
+    self.push_data = self.push_data.gsub('[MESSAGE_ID]', self.id.to_s)
     temp_receipts = recipients.map { |r| build_receipt(r, 'inbox', false) }
     if temp_receipts.all?(&:valid?)
       temp_receipts.each(&:save!) #Save receipts

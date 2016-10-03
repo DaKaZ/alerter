@@ -13,4 +13,8 @@ class Alerter::MessageBuilder < Alerter::BaseBuilder
   def long_msg
     params[:long_msg] || ''
   end
+
+  def push_data
+    params[:push_data] || ''
+  end
 end

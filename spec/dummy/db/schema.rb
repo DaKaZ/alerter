@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160315133337) do
+ActiveRecord::Schema.define(version: 20160923000000) do
 
   create_table "alerter_messages", force: :cascade do |t|
     t.string   "type"
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20160315133337) do
     t.boolean  "global",               default: false
     t.datetime "expires"
     t.text     "data"
+    t.text     "push_data"
   end
 
   create_table "alerter_notification_types", force: :cascade do |t|
