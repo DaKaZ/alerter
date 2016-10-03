@@ -15,6 +15,7 @@ module Alerter
     end
 
     def call
+      pp @message
       return false unless (Alerter.notification_method - Alerter.available_notification_methods).empty? # array subtraction to see if notification methods are in the available list
       Alerter.notification_method.each do |method|
         case method
