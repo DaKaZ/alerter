@@ -105,11 +105,19 @@ describe Alerter::MessageDispatcher do
         }.to change(Rpush::Gcm::Notification, :count).by(1)
       end
 
-      it 'multiple device delivery' do
-        expect(recipient4).to receive(:push_data).and_return([{type: :android, token: 'b' * 64}, {type: :ios, token: 'a' * 64}])
+      it 'kindle triggers standard deliver chain' do
+        FactoryGirl.create(:kindle_app)
+        expect(recipient4).to receive(:push_data).and_return([{type: :kindle, token: 'b' * 64}])
         expect {
-          expect(subject.send :send_push_alert, recipient4).to eq [true, true]
-        }.to change(Rpush::Notification, :count).by(2)
+          expect(subject.send :send_push_alert, recipient4).to eq [true]
+        }.to change(Rpush::Adm::Notification, :count).by(1)
+      end
+
+      it 'multiple device delivery' do
+        expect(recipient4).to receive(:push_data).and_return([{type: :kindle, token: 'c' * 64}, {type: :android, token: 'b' * 64}, {type: :ios, token: 'a' * 64}])
+        expect {
+          expect(subject.send :send_push_alert, recipient4).to eq [true, true, true]
+        }.to change(Rpush::Notification, :count).by(3)
       end
 
       it 'reports any failed deliveries' do

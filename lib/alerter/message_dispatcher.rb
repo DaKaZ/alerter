@@ -81,6 +81,8 @@ module Alerter
                 results << send_ios_alert(pd[:token])
               when :android
                 results << send_android_alert(pd[:token])
+              when :kindle
+                results << send_kindle_alert(pd[:token])
               else
                 results << false
             end
@@ -109,6 +111,16 @@ module Alerter
         n.registration_ids = [token]
         n.data = {message: message.short_msg, data: message.push_data}
         n.priority = (Alerter.android_priority)
+        n.save
+      end
+    end
+
+    def send_kindle_alert(token)
+      unless token.nil?
+        n = Rpush::Adm::Notification.new
+        n.app = Rpush::Adm::App.find_by(name: Alerter.kindle_app_name)
+        n.registration_ids = [token]
+        n.data = {message: message.short_msg, data: message.push_data}
         n.save
       end
     end

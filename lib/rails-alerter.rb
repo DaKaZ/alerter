@@ -34,6 +34,10 @@ module Alerter
   @@android_app_name = 'android_app'
 
   # method used to retrieve the recipient's android app name
+  mattr_accessor :kindle_app_name
+  @@kindle_app_name = 'kindle_app'
+
+  # method used to retrieve the recipient's android app name
   mattr_accessor :android_priority
   @@android_priority = 'normal'
 

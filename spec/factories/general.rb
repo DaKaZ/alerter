@@ -116,4 +116,12 @@ CEavgZcTZ6SvMuayqJdGGB+zb1V8XwXMtCjApR/kTm47DjxO4DmpOPs=
     auth_key '12345'
     connections 1
   end
+
+  factory :kindle_app, class: Rpush::Adm::App do
+    name 'kindle_app'
+    auth_key '69876'
+    connections 1
+    client_id '1234'
+    client_secret '5678'
+  end
 end
