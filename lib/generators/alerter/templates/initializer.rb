@@ -13,6 +13,7 @@ Alerter.setup do |config|
 
   #config.ios_app_name = 'ios_app'
   #config.android_app_name = 'android_app'
+  #config.kindle_app_name = 'kindle_app'
   #config.android_priority = 'normal' #high
 
   #Configures the array of supported notification methods for your application
